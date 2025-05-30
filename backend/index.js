@@ -44,6 +44,33 @@ app.get('/search', async (req, res, next) => {
 });
 
 
+app.post('/add', async (req, res, next) => {
+    try {
+        //クエリで受け取った値をSQLと絡めて変数に格納するSQL文
+        const add = 'INSERT INTO leaf_yasai VALUES($1,$2,$3,$4,$5)';
+
+        //reqにきた文字、数字、データを変数に格納？
+        const values = [];
+
+        //SQL文の実行
+        const results = await pool.query(add, values);
+
+        //htmlにresを送ろう
+        res.send('登録完了しました')
+
+        //logの出力
+        console.log(req);
+
+    } catch (error) {
+        console.error(error);
+        // エラーハンドリング: サーバーエラーが発生した場合は500をクライアントに返す
+        res.status(500).send('サーバーエラー');
+    }
+});
+
+
+
+
 app.listen(3333, () => {                                //受付中 立ち上がった状態でリクエストをまつよ
     console.log('Server listening on port 3333');
 });
